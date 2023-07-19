@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import { ChelasProvider } from "../context/ChelasProvider";
+
+import PublicLayout from "../layout/PublicLayout";
+import Prueba from "./pages/Prueba";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <ChelasProvider>
+        <Routes>
+          <Route path="/" element={<PublicLayout />}>
+            <Route index element={<Prueba />} />
+          </Route>
+        </Routes>
+      </ChelasProvider>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
+
+/*
+APOYARME EN ESTÁ PÁGINA
+https://github.com/CJavat/curso-react-udemy2/tree/master/uptask_mern/frontend/src
+*/
