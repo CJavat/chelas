@@ -9,6 +9,9 @@ const ChelasProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
   const [usuarioLogeado, setUsuarioLogeado] = useState({});
   const [chelas, setChelas] = useState([]);
+  const [banderaUsuarioLogeado, setBanderaUsuarioLogeado] = useState(false);
+  const [mostrarNav, setMostrarNav] = useState(false);
+  const [banderaChela, setBanderaChela] = useState(false);
 
   useEffect(() => {
     if (localStorage.theme === "dark") {
@@ -31,12 +34,18 @@ const ChelasProvider = ({ children }) => {
     }
 
     setUsuarioLogeado(usuario);
-  }, []);
+  }, [banderaUsuarioLogeado]);
+
+  useEffect(() => {
+    if (banderaUsuarioLogeado) {
+      setMostrarNav(true);
+    }
+  }, [banderaUsuarioLogeado]);
 
   useEffect(() => {
     const obtenerChelas = async () => {
       try {
-        const respuesta = await consultaAxios.get("/chela/obtener-chelas/");
+        const respuesta = await consultaAxios.get("/chela/obtener-chelas");
         setChelas(respuesta.data);
       } catch (error) {
         Swal.fire({
@@ -46,8 +55,9 @@ const ChelasProvider = ({ children }) => {
         });
       }
     };
+
     obtenerChelas();
-  }, [chelas]);
+  }, [banderaChela]);
 
   const darkModeFunction = () => {
     document.documentElement.classList.toggle("dark");
@@ -67,10 +77,16 @@ const ChelasProvider = ({ children }) => {
         darkMode,
         usuarioLogeado,
         chelas,
+        mostrarNav,
+        banderaUsuarioLogeado,
+        banderaChela,
 
         setDarkMode,
         setUsuarioLogeado,
         setChelas,
+        setMostrarNav,
+        setBanderaUsuarioLogeado,
+        setBanderaChela,
 
         darkModeFunction,
       }}

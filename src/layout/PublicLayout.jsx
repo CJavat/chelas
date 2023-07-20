@@ -15,7 +15,7 @@ const PublicLayout = () => {
   }, []);
 
   return token ? (
-    <div className="bg-slate-50 dark:bg-slate-900 text-black dark:text-white min-h-screen flex flex-col justify-center items-center">
+    <div className="bg-slate-50 dark:bg-slate-900 text-black dark:text-white min-h-screen flex flex-col justify-center items-center relative">
       <Header />
       <Outlet />
     </div>

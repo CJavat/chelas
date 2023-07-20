@@ -13,6 +13,7 @@ import AgregarChela from "./pages/public/AgregarChela";
 import EditarChela from "./pages/public/EditarChela";
 
 import MiPerfil from "./pages/public/MiPerfil";
+import EditarPerfil from "./pages/public/auth/EditarPerfil";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/agregar-chela" element={<AgregarChela />} />
             <Route path="/editar-chela/:id" element={<EditarChela />} />
             <Route path="/mi-perfil/:id" element={<MiPerfil />} />
+            <Route path="/editar-perfil/:id" element={<EditarPerfil />} />
           </Route>
 
           <Route path="/auth" element={<AuthLayout />}>

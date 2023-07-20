@@ -1,21 +1,38 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logoChelas from "../assets/favicon.png";
 import useChelas from "../hooks/useChelas";
 
 const Header = () => {
   const location = useLocation();
-  const { darkMode, usuarioLogeado, darkModeFunction } = useChelas();
-  const [mostrarNav, setMostrarNav] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (usuarioLogeado) {
-      setMostrarNav(true);
-    }
-  }, [usuarioLogeado]);
+  const {
+    darkMode,
+    usuarioLogeado,
+    mostrarNav,
+    setUsuarioLogeado,
+    setChelas,
+    setBanderaUsuarioLogeado,
+    setMostrarNav,
+    setBanderaChela,
+    darkModeFunction,
+  } = useChelas();
+
+  const cerrarSesion = () => {
+    setUsuarioLogeado({});
+    setChelas([]);
+    setBanderaUsuarioLogeado(false);
+    setBanderaChela(false);
+    setMostrarNav(false);
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+
+    navigate("/auth");
+  };
 
   return (
-    <div className="bg-slate-200 dark:bg-slate-800 w-full flex flex-col gap-2 justify-center min-h-20 py-5">
+    <div className="bg-slate-200 dark:bg-slate-800 w-full flex flex-col gap-2 justify-center min-h-20 py-5 sticky top-0">
       <div className="flex justify-around items-center">
         <Link to="/">
           <div className="flex justify-center items-center gap-2">
@@ -40,17 +57,17 @@ const Header = () => {
       {mostrarNav ? (
         <div className="flex flex-wrap justify-between items-center gap-5 px-5">
           <Link
-            to={`/mi-perfil/${usuarioLogeado.id}`}
+            to={`/mi-perfil/${usuarioLogeado?.id}`}
             className="font-bold uppercase text-lg text-black dark:text-white "
           >
             <div>
               <p
                 className={`hover:text-red-600 ${
-                  location.pathname === `/mi-perfil/${usuarioLogeado.id}` &&
+                  location.pathname === `/mi-perfil/${usuarioLogeado?.id}` &&
                   "text-red-600"
                 }`}
               >
-                {usuarioLogeado.nombre} {usuarioLogeado.apellido}
+                {usuarioLogeado?.nombre} {usuarioLogeado?.apellido}
               </p>
             </div>
           </Link>
@@ -65,6 +82,10 @@ const Header = () => {
                 <Link to="/agregar-chela">AGREGAR CHELA</Link>
               </li>
             </ul>
+
+            <button onClick={cerrarSesion} className="text-blue-500 uppercase">
+              Cerrar Sesión
+            </button>
           </nav>
         </div>
       ) : null}

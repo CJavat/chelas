@@ -7,7 +7,6 @@ import useChelas from "../../hooks/useChelas";
 
 const IniciarSesion = () => {
   const navigate = useNavigate();
-
   const { setUsuarioLogeado } = useChelas();
 
   const [email, setEmail] = useState("");
@@ -18,7 +17,10 @@ const IniciarSesion = () => {
     e.preventDefault();
     setCargando(true);
 
-    const datosRegistro = { email, password };
+    const datosRegistro = {
+      email: email.toLowerCase(),
+      password: password.toLowerCase(),
+    };
 
     try {
       const resultado = await consultaAxios.post(
@@ -36,7 +38,6 @@ const IniciarSesion = () => {
       setPassword("");
 
       Swal.fire("¡INICIADO SESIÓN!", resultado.data.msg, "success");
-
       navigate("/");
     } catch (error) {
       console.log(error);

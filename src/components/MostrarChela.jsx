@@ -1,12 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
-import { formatearMoneda } from "../helpers";
-import consultaAxios from "../../config/axios";
 import Swal from "sweetalert2";
-import { useEffect, useState } from "react";
+import consultaAxios from "../../config/axios";
+import { formatearMoneda } from "../helpers";
 import useChelas from "../hooks/useChelas";
+import { useEffect } from "react";
 
-const MostrarChela = ({ chela, usuarioLogeado }) => {
+const MostrarChela = ({ chela }) => {
   const navigate = useNavigate();
+
+  const { usuarioLogeado, chelas, banderaChela, setChelas, setBanderaChela } =
+    useChelas();
 
   const {
     _id: idChela,
@@ -20,7 +23,11 @@ const MostrarChela = ({ chela, usuarioLogeado }) => {
 
   const { id: idUsuarioLogeado } = usuarioLogeado;
 
-  const EliminarChela = async (id) => {
+  // useEffect(() => {
+  //   setChelas(chelas);
+  // }, [chelas]);
+
+  const EliminarChela = async (idChela) => {
     const token = localStorage.getItem("token");
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -34,10 +41,16 @@ const MostrarChela = ({ chela, usuarioLogeado }) => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Sí, acepto borrarlo",
       }).then((result) => {
         if (result.isConfirmed) {
           consultaAxios.delete(`/chela/eliminar-chela/${idChela}`, config);
+          const chelasActualizada = chelas.filter(
+            (chelaState) => chelaState._id !== idChela
+          );
+
+          setChelas(chelasActualizada);
+          // setBanderaChela(!banderaChela);
 
           Swal.fire(
             "¡CHELA BORRADA!",
